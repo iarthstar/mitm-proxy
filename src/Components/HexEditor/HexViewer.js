@@ -8,7 +8,7 @@ const HexViewer = (props) => {
 
   return (
     <Grid item xs={12} sm={8} md={8} lg={8}>
-      {/* Length: {len} */}
+      Length: {len}
       <Typography style={{ fontFamily: "Source Code Pro" }}>
         {chunk(str, offset).map((v,i) => (
           <span key={"line-"+i}>

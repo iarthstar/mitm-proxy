@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
-import { setHexCode } from "../../Redux/Actions/HexCode";
+// import { setHexCode } from "../../Redux/Actions/HexCode";
 
 const useStyles = makeStyles(theme => ({
   hexSpan: {
@@ -22,21 +22,22 @@ const SingleHex = (props) => {
 
   const {
     hex,
-    setHexCode
+    // setHexCode
   } = props;
 
   return (
     <span
       className={classes.hexSpan}
-      onClick={() => setHexCode(hex)}
+      // onClick={() => setHexCode(hex)}
     >
       {hex.toUpperCase()}
     </span>
   );
 }
 
-const mapStateToProps = st => ({});
+// const mapStateToProps = st => ({});
 
-export default connect(mapStateToProps, {
-  setHexCode
-})(SingleHex);
+// export default connect(mapStateToProps, {
+//   setHexCode
+// })(SingleHex);
+export default SingleHex;

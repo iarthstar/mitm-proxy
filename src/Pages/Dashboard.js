@@ -3,14 +3,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import Layout from "../Components/Layout";
 import { data } from "../__Mocks__/Data/Hex";
 import { USER } from "../Constants/Roles";
-import { Box, Grid, TextField } from "@material-ui/core";
+import { Box, Grid, Paper } from "@material-ui/core";
 
 import C from "../Utils/Conversion";
 
 import HexViewer from "../Components/HexEditor/HexViewer";
-// import BinaryView from "../Components/HexEditor/BinaryView";
 import { connect } from "react-redux";
 import DataInspector from "../Components/Panels/DataInspector";
+
+import RecycledList from 'react-recycled-scrolling';
+
+const handleClick = (i) => (e) => {
+  console.log(e);
+  console.log(i);
+}
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -37,10 +43,18 @@ const packets = [1]
   // .map(v => [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]).flat()
   // .map(v => [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]).flat()
   .map(v => [1]).flat().map((v) => {
-    const len = parseInt((Math.random() * 1000) / quantum) * quantum;
+    const len = parseInt(16 / quantum) * quantum;
+    // const len = parseInt((Math.random() * 1000) / quantum) * quantum;
     const str = C.strToHexChunks(hexStr.slice(len, len + len));
     return { len, str, offset, quantum };
   });
+
+const list = [];
+for (let i = 1; i <= 20000; i++) list.push({
+  onClick: handleClick(i),
+  data: { label: "Hex Code : " + (C.decimalToHex(i)) }
+});
+const SheepRow = (props) => (<HexViewer {...packets[0]} {...props} />);
 
 const Dashboard = (props) => {
   const classes = useStyles();
@@ -48,10 +62,6 @@ const Dashboard = (props) => {
   const { hexCode: { selectedHexCode } } = props;
 
   const [hexCode, setHexCode] = useState(selectedHexCode);
-
-  const dataList = [...packets];
-
-  // const view = (props) => <HexViewer {...props} />;
 
   useEffect(() => {
     setHexCode(selectedHexCode);
@@ -74,14 +84,17 @@ const Dashboard = (props) => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={8} lg={8}>
-              <HexViewer {...dataList[0]} />
+              <Paper style={{ height: "500px" }}>
+                <RecycledList
+                  // ref="viewPort"
+                  className="viewPort"
+                  itemFn={SheepRow}
+                  attrList={list}
+                />
+              </Paper>
             </Grid>
           </Grid>
 
-          {/* <RecyclerView
-            dataList={dataList}
-            view={view}
-          /> */}
         </Box>
       </main>
     </Layout >
