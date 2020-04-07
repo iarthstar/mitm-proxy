@@ -11,7 +11,7 @@ import HexViewer from "../Components/HexEditor/HexViewer";
 import { connect } from "react-redux";
 import DataInspector from "../Components/Panels/DataInspector";
 
-import RecycledList from 'react-recycled-scrolling';
+import RecyclerView from "../Components/RecyclerView";
 
 const handleClick = (i) => (e) => {
   console.log(e);
@@ -36,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
 
 const quantum = 4;
 const offset = 16;
+
+const listData = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  .map(e => [1, 2, 3, 4, 5, 6, 7, 8, 9]).flat()
+  .map(e => [1, 2, 3, 4, 5, 6, 7, 8, 9]).flat()
+  .map(e => Math.random()).flat();
+
+const listView = (data, i) => (<div key={i}>{data}</div>);
 
 const hexStr = C.asciiToHex(data.ascii) || data.hex.replace(/ /g, "");
 
@@ -84,12 +91,12 @@ const Dashboard = (props) => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={8} lg={8}>
-              <Paper style={{ height: "500px" }}>
-                <RecycledList
-                  className="viewPort"
-                  itemHeight={160}
-                  itemFn={HexView}
-                  attrList={list}
+              <Paper>
+                <RecyclerView
+                  rootHeight={500}
+                  itemHeight={20}
+                  listData={listData}
+                  listView={listView}
                 />
               </Paper>
             </Grid>

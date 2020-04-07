@@ -19,7 +19,12 @@
       });
     };
 
-    const rootHeight = 200;
+    const updateChild = async (elem, data, elemIndex, i) => {
+      let number = elemIndex + i;
+      elem.innerHTML = ((number++ % 256).toString(16) + " ").toUpperCase().repeat(10);
+    }
+
+    const rootHeight = 500;
 
     const rootStyle = {
       height: rootHeight + "px",
@@ -28,21 +33,35 @@
       overflow: "scroll"
     };
 
+    const testAsync = async (elem, data, elemIndex, i) => {
+      const startTime = performance.now();
+      // await new Promise((resolve => {
+      //   setTimeout(() => {
+      //     console.log("IN ASYNC", i);
+      //     resolve();
+      //   }, 2000);
+      // }));
+      await updateChild(elem, children[elemIndex + i], elemIndex, i);
+      const endTime = performance.now();
+      console.log("OP Time", endTime - startTime);
+    };
+
     applyStylesForID("root", rootStyle);
 
     const children = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      .map(e => [1,2,3,4,5,6,7,8,9]).flat()
+      .map(e => [1, 2, 3, 4, 5, 6, 7, 8, 9]).flat()
       // .map(e => [1,2,3,4,5,6,7,8,9]).flat()
       .map(e => [1, 2, 3, 4, 5, 6, 7, 8, 9]).flat();
 
     const cellStyle = {
       width: "100%",
-      height: "10px",
+      height: "20px",
+      fontFamily: "Source Code Pro"
     };
 
     let scrollPositionY = 0;
-    let scrollOffset = 10;
-    let itemHeight = 10;
+    let scrollOffset = 20;
+    let itemHeight = 20;
     let totalHeight = itemHeight * children.length;
 
     const visibleChildrenLength = rootHeight / itemHeight;
@@ -50,8 +69,9 @@
     children.slice(0, visibleChildrenLength).map((e, i) => {
       const div = document.createElement("div");
       applyStylesToElement(div, cellStyle);
-
-      div.style.background = "#" + ("0".repeat(6 - String(i * 10).length) + i * 10);
+      let number = i;
+      div.innerHTML = ((number++).toString(16) + " ").toUpperCase().repeat(10);
+      // div.style.background = "#" + ("0".repeat(6 - String(i * 10).length) + i * 10);
 
       window.root.appendChild(div);
     });
@@ -64,8 +84,8 @@
       // console.log("Index", scrollPositionY / scrollOffset);
       const elemIndex = scrollPositionY / scrollOffset;
 
-      if (elemIndex + visibleChildrenLength > children.length && e.deltaY > 0) {
-        console.log("ENDED");
+      if (elemIndex + visibleChildrenLength >= children.length && e.deltaY > 0) {
+        // console.log("ENDED");
         return;
       } else {
         if (e.deltaY < 0 && scrollPositionY >= itemHeight) {
@@ -75,10 +95,19 @@
           scrollPositionY += scrollOffset;
           // root.scrollTo(0,scrollPositionY);
         }
-        console.log("Not ENDED");
-        
+        // console.log("Not ENDED");
+
+        const len = window.root.children.length;
+
+        // for (let i = 0; i < len; i++) {
+        //   testAsync([...window.root.children][i], children[elemIndex + i], elemIndex, i);
+        //   console.log("IN FOR", i);
+        // }
+
         [...window.root.children].map((elem, i) => {
-          elem.style.background = "#" + ("0".repeat(6 - String((elemIndex + i) * 10).length) + (elemIndex + i) * 10);
+          ;
+          updateChild(elem, children[elemIndex + i], elemIndex, i);
+          // elem.style.background = "#" + ("0".repeat(6 - String((elemIndex + i) * 10).length) + (elemIndex + i) * 10);
         });
 
         // children.slice(elemIndex, elemIndex + visibleChildrenLength).map((e, i) => {

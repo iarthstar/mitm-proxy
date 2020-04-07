@@ -29,7 +29,7 @@ const BinaryView = (props) => {
   return (
     <FormControl component="fieldset">
       <FormLabel component="legend">Binary Digits</FormLabel>
-      <Box row className={classes.boxInForm}>
+      <Box row="true" className={classes.boxInForm}>
         {values.map((v, i) => (
           <Tooltip key={"bit-toggle-" + i} title={"Bit " + (8 - i)} aria-label={"bit-" + (8 - i)}>
             <Checkbox
