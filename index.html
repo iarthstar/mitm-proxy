@@ -1,0 +1,96 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    const applyStylesForID = (id, styles) => {
+      Object.keys(styles).forEach((key) => {
+        window[id].style[key] = styles[key];
+      });
+    };
+
+    const applyStylesToElement = (elem, styles) => {
+      Object.keys(styles).forEach((key) => {
+        elem.style[key] = styles[key];
+      });
+    };
+
+    const rootHeight = 200;
+
+    const rootStyle = {
+      height: rootHeight + "px",
+      width: "100%",
+      border: "4px solid red",
+      overflow: "scroll"
+    };
+
+    applyStylesForID("root", rootStyle);
+
+    const children = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      .map(e => [1,2,3,4,5,6,7,8,9]).flat()
+      // .map(e => [1,2,3,4,5,6,7,8,9]).flat()
+      .map(e => [1, 2, 3, 4, 5, 6, 7, 8, 9]).flat();
+
+    const cellStyle = {
+      width: "100%",
+      height: "10px",
+    };
+
+    let scrollPositionY = 0;
+    let scrollOffset = 10;
+    let itemHeight = 10;
+    let totalHeight = itemHeight * children.length;
+
+    const visibleChildrenLength = rootHeight / itemHeight;
+
+    children.slice(0, visibleChildrenLength).map((e, i) => {
+      const div = document.createElement("div");
+      applyStylesToElement(div, cellStyle);
+
+      div.style.background = "#" + ("0".repeat(6 - String(i * 10).length) + i * 10);
+
+      window.root.appendChild(div);
+    });
+
+    window.root.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      // console.log("Wheel", e);
+
+
+      // console.log("Index", scrollPositionY / scrollOffset);
+      const elemIndex = scrollPositionY / scrollOffset;
+
+      if (elemIndex + visibleChildrenLength > children.length && e.deltaY > 0) {
+        console.log("ENDED");
+        return;
+      } else {
+        if (e.deltaY < 0 && scrollPositionY >= itemHeight) {
+          scrollPositionY -= scrollOffset;
+          // root.scrollTo(0,scrollPositionY);
+        } else if (e.deltaY > 0 && scrollPositionY <= totalHeight) {
+          scrollPositionY += scrollOffset;
+          // root.scrollTo(0,scrollPositionY);
+        }
+        console.log("Not ENDED");
+        
+        [...window.root.children].map((elem, i) => {
+          elem.style.background = "#" + ("0".repeat(6 - String((elemIndex + i) * 10).length) + (elemIndex + i) * 10);
+        });
+
+        // children.slice(elemIndex, elemIndex + visibleChildrenLength).map((e, i) => {
+        //   const div = document.createElement("div");
+        //   applyStylesToElement(div, cellStyle);
+
+
+        //   window.root.appendChild(div);
+        // });
+      }
+    });
+  </script>
+</body>
+
+</html>

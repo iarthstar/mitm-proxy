@@ -43,7 +43,7 @@ const packets = [1]
   // .map(v => [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]).flat()
   // .map(v => [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]).flat()
   .map(v => [1]).flat().map((v) => {
-    const len = parseInt(16 / quantum) * quantum;
+    const len = parseInt(128 / quantum) * quantum;
     // const len = parseInt((Math.random() * 1000) / quantum) * quantum;
     const str = C.strToHexChunks(hexStr.slice(len, len + len));
     return { len, str, offset, quantum };
@@ -54,7 +54,7 @@ for (let i = 1; i <= 20000; i++) list.push({
   onClick: handleClick(i),
   data: { label: "Hex Code : " + (C.decimalToHex(i)) }
 });
-const SheepRow = (props) => (<HexViewer {...packets[0]} {...props} />);
+const HexView = (props) => (<HexViewer {...packets[0]} {...props} />);
 
 const Dashboard = (props) => {
   const classes = useStyles();
@@ -86,9 +86,9 @@ const Dashboard = (props) => {
             <Grid item xs={12} sm={6} md={8} lg={8}>
               <Paper style={{ height: "500px" }}>
                 <RecycledList
-                  // ref="viewPort"
                   className="viewPort"
-                  itemFn={SheepRow}
+                  itemHeight={160}
+                  itemFn={HexView}
                   attrList={list}
                 />
               </Paper>
