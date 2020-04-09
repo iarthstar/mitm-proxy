@@ -2,19 +2,22 @@ import React from "react";
 import clsx from "clsx";
 import { withRouter } from "react-router";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { fade, makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import { Menu, ChevronRight, ChevronLeft } from "@material-ui/icons";
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, CssBaseline, Divider } from "@material-ui/core";
+import { Menu, ChevronRight, ChevronLeft, Search } from "@material-ui/icons";
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, CssBaseline, Divider, InputBase } from "@material-ui/core";
 
 import { LINKS } from "../Constants/Roles";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
+  grow: {
+    flexGrow: 1,
+  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
@@ -66,7 +69,47 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-  }
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '200px',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(0),
+      marginRight: theme.spacing(4),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '40ch',
+      '&:focus': {
+        width: '50ch',
+      },
+    },
+  },
 }));
 
 const NavBar = (props) => {
@@ -117,6 +160,21 @@ const NavBar = (props) => {
           <Typography variant="h6" noWrap>
             {title}
           </Typography>
+          <div className={classes.grow} />
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <Search />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+          <div className={classes.grow} />
         </Toolbar>
       </AppBar>
       <Drawer
