@@ -30,7 +30,7 @@ const PacketView = (props) => {
   const noOfPackets = packets.length;
 
   return <>
-    <Paper style={{ height: window.innerHeight - 88, overflow: "scroll" }}>
+    <Paper style={{ height: window.innerHeight - 104, overflow: "scroll" }}>
       <Virtualized
         dataArray={packets}
         useDynamicRowHeight={true}
