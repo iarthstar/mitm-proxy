@@ -4,17 +4,13 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Grid } from "@material-ui/core";
 
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-
 import Layout from "./../Components/Common/Layout";
 import DataInspectorPanel from "./../Components/Panels/DataInspectorPanel";
 import ConnectionsPanel from "./../Components/Panels/ConnectionsPanel";
 
 import { USER } from "./../Constants/Roles";
-import { data } from "./../__Mocks__/Data/Tree";
 import PacketView from "./../Components/PacketsViewer/PacketView";
-import TreePanel from "./../Components/Panels/TreePanel";
+import NotesPanel from "../Components/Panels/NotesPanel";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -43,6 +39,7 @@ const Dashboard = (props) => {
   const { hexCode: { selectedHexCode } } = props;
 
   const [hexCode, setHexCode] = useState(selectedHexCode);
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     setHexCode(selectedHexCode);
@@ -63,10 +60,9 @@ const Dashboard = (props) => {
               <DataInspectorPanel
                 hexCode={hexCode}
               />
-              <TreePanel
-                data={data}
-                collapseIcon={<ExpandMore />}
-                expandIcon={<ChevronRight />}
+              <NotesPanel
+                notes={notes}
+                setNotes={setNotes}
               />
             </Grid>
             <Grid item xs={12} sm={8} md={8} lg={8}>
